@@ -15,14 +15,18 @@ function selectBorderColor(isActive: boolean, canDrop: boolean) {
 	}
 }
 
-export const DropGroup: FC<DropGroupProps> = ({ allowedDropEffect, children, accept = ItemTypes.BOX }) => {
+export const DropGroup: FC<DropGroupProps> = ({ allowedDropEffect, children, accept = ItemTypes.BOX, groupIndex, pasteCb }) => {
 	const [{ canDrop, isOver }, drop] = useDrop(
 		() => ({
 			accept,
-			drop: () => ({
-				name: `${allowedDropEffect} Dustbin`,
-				allowedDropEffect,
-			}),
+			drop: (item) => {
+				pasteCb && pasteCb(item)
+				return {
+					name: `${allowedDropEffect} Dustbin`,
+					allowedDropEffect,
+					groupIndex: groupIndex
+				}
+			},
 			collect: (monitor: any) => ({
 				isOver: monitor.isOver(),
 				canDrop: monitor.canDrop(),

@@ -3,6 +3,7 @@ import './App.scss';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Container } from './component/generateGroup/main'
+// import { Container } from './component/multiple-targets'
 
 
 function App() {

@@ -6,7 +6,7 @@ import { ItemTypes } from '../interface'
 import { DragGroupProps, DropResult } from './interface'
 import './index.scss'
 
-export const DragGroup: FC<DragGroupProps> = ({ id, pasteCb, children, type = ItemTypes.BOX }) => {
+export const DragGroup: FC<DragGroupProps> = ({ id, children, type = ItemTypes.BOX }) => {
 	const [{ opacity }, drag] = useDrag(
 		() => ({
 			type,
@@ -14,9 +14,7 @@ export const DragGroup: FC<DragGroupProps> = ({ id, pasteCb, children, type = It
 			end(item, monitor) {
 				//选中放置
 				const dropResult = monitor.getDropResult() as DropResult
-				console.log(12, dropResult, monitor, item)
 				if (item && dropResult) {
-					pasteCb && pasteCb({id})
 					const isDropAllowed =
 						dropResult.allowedDropEffect === 'any' ||
 						dropResult.allowedDropEffect === dropResult.dropEffect

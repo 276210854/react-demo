@@ -4,7 +4,7 @@ import { DragGroup } from '@/common/drag/dragContainer'
 import { DropGroup } from '@/common/drag/dropContainter'
 import './index.scss'
 import {Arrow, OpenFolder, CloseFolder, Dian, Person} from '@/common/icons'
-import { wrapperawait, toFlatArray } from '@/utils/tool'
+import { wrapperawait, toFlatObj } from '@/utils/tool'
 import { getDetailByIdXHR, getListXHR } from '@/utils/request'
 import { message } from 'antd';
 import GroupCard from '../card'
@@ -15,7 +15,8 @@ export const Container: FC = () => {
 	const [sourceList, setSourceList] = useState([])
 	//obj 字段
 	const [sourceObj, setSourceObj] = useState({})
-	const [groupIds, setGroupIds] = useState([])
+	//二维数组 分组
+	const [groupIds, setGroupIds] = useState([[]])
 	useEffect(() => {
 		getList()
 	}, [])
@@ -23,32 +24,41 @@ export const Container: FC = () => {
 	const getList = async () => {
 		const [err, res] = await wrapperawait(getListXHR())
 		if(err) return
-		//处理数据
-		setSourceObj(toFlatArray(res, []))
+		//tree转字典，新增parentIds
+		setSourceObj(toFlatObj(res, []))
 		res?.length && setSourceList(res)
 	}
-	//放group
-	const handlePaste = async ({id}) => {
+	//paste group
+	const handlePaste = async ({id}, index) => {
 		if(!id) return
 		const [err, res] = await wrapperawait(getDetailByIdXHR(id))
 		if(err) return
-		//是否已经存在
-		const _sourceObj = {...sourceObj}
-		_sourceObj[id]['details'] = res
-		setSourceObj(_sourceObj)
-		setGroupIds([...groupIds, id])
+		//新增元数据 详情
+		setSourceObj(pre => {
+			const _pre = {...pre}
+			_pre[id]['details'] = res
+			return _pre
+		})
+		//分组，index组, 去重
+		setGroupIds(pre => {
+			const indexGroup = pre[index].indexOf(id) > -1 ? [...pre[index]] : [...pre[index], id]
+			const _groupIds = [...pre]
+			_groupIds.splice(index, 1, indexGroup)
+			const hasEmptyGroup = _groupIds.some(item => !item?.length)
+			return hasEmptyGroup ? _groupIds : [..._groupIds, []]
+		})
 	}
-	//可拖动元素
+	//drag element
 	const renderNoChildMenu = (props) => {
 		return (
-			<DragGroup id={props.id} pasteCb={handlePaste} type={ItemTypes.BOX}>
+			<DragGroup id={props.id} type={ItemTypes.BOX}>
 				<Dian />&nbsp;&nbsp;
 				<Person />&nbsp;&nbsp;
 				<span>{props.name}</span>
 			</DragGroup>
 		)
 	}
-	//文件夹
+	//folder
 	const renderChildMenu = (item) => {
 		const switchStatus = () => {
 			const _sourceObj = {...sourceObj, [item.id]: {...item, showChild: !sourceObj[item.id].showChild}}
@@ -76,9 +86,17 @@ export const Container: FC = () => {
 	const renderMenu = (item) => {
 		return item?.children?.length ? renderChildMenu(item) : renderNoChildMenu(item)
 	}
-	//删除
-	const deleteGroup = (id) => {
-		setGroupIds(groupIds.filter(val => val !== id))
+	//delete group
+	const deleteGroup = (index, id) => {
+		setGroupIds(pre => {
+			//index组 删除后
+			const newGroup = pre[index].filter(val => val !== id)
+			const groups = [...pre]
+			newGroup?.length && groups.splice(index, 1, newGroup)
+			!newGroup?.length && groups.splice(index, 1)
+			const hasEmptyGroup = groups.some(item => !item.length)
+			return hasEmptyGroup ? groups : [...groups, []]
+		})
 		message.success('已删除')
 	}
 	return (
@@ -93,17 +111,23 @@ export const Container: FC = () => {
 				}
 			</div>
 			<div className='right'>
-				<DropGroup allowedDropEffect="copy" accept={ItemTypes.BOX}>
-					{groupIds?.length ? (
-						groupIds.map(id => {
-							return (
-								<div className='card' key={id}>
-										<GroupCard info={sourceObj[id]} allSourceObj={sourceObj} close={deleteGroup}/>
-								</div>
-							)
-						})
-					) : null}
-				</DropGroup>
+				{groupIds?.length ? (
+					groupIds.map((ids,index) => {
+						return (
+							<div className='card-group' key={index}>
+								<DropGroup pasteCb={val => handlePaste(val, index)} allowedDropEffect="copy" accept={ItemTypes.BOX} groupIndex={index}>
+									{ids.map(id => {
+										return (
+											<div className='card-wrap' key={id}>
+												<GroupCard info={sourceObj[id]} allSourceObj={sourceObj} close={id => deleteGroup(index, id)}/>
+											</div>
+										)
+									})}
+								</DropGroup>
+							</div>
+						)
+					})
+				) : null}
 			</div>
 		</div>
 	)

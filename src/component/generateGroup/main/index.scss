@@ -35,7 +35,10 @@
     .borderBottom{
         border-bottom: 1px solid #eee;
     }
-    .card{
+    .card-group{
         margin-bottom: 10px;
+        min-height: 100px;
+    }
+    .card-wrap{
     }
 }
