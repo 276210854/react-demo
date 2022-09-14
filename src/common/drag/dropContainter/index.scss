@@ -1,0 +1,20 @@
+.drop{
+    border: 2px solid transparent;
+    border-radius: 0 0 4px 4px;
+    padding: 5px;
+}
+.main{
+    padding: 0 5px 10px;
+    border: 2px solid #eee;
+    border-radius: 4px;
+    border-top: none;
+    .ant-checkbox-group{
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        .ant-checkbox-group-item{
+            width: calc(25% - 8px);
+            margin-bottom: 10px;
+        }
+    }
+}

@@ -1,0 +1,41 @@
+.container{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .left,.right{
+        flex: 1;
+        width: 50%;
+    }
+    >.right{
+        padding: 10px;
+        background-color: #a8ebc56b;
+        border-radius: 4px;
+    }
+    .folder{
+        font-size: 16px;
+        color: #333;
+        text-align: left;
+        overflow: hidden;
+        cursor: pointer;
+        line-height: 30px;
+    }
+    .folder-child{
+        padding-left: 20px;
+        .folder{
+            // border-bottom: none;
+        }
+    }
+    .folderName{
+        margin-left: 5px;
+    }
+    .detail{
+        background-color: #fff;
+        padding-left: 20px;
+    }
+    .borderBottom{
+        border-bottom: 1px solid #eee;
+    }
+    .card{
+        margin-bottom: 10px;
+    }
+}
