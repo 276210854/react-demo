@@ -145,7 +145,79 @@ app.post('/getDetailById', function(request, response) {
                 value: '3123'
             }
         ],
-        '41': [
+        '6': [
+            {
+                name: 'asd',
+                value: '121'
+            },
+            {
+                name: 'wqe',
+                value: '1221'
+            },
+            {
+                name: 'ret',
+                value: '22'
+            },
+            {
+                name: 'vcb',
+                value: '33'
+            }
+        ],
+        '7': [
+            {
+                name: 'asd',
+                value: '121'
+            },
+            {
+                name: 'wqe',
+                value: '1221'
+            },
+            {
+                name: 'ret',
+                value: '22'
+            },
+            {
+                name: 'vcb',
+                value: '33'
+            }
+        ],
+        '9': [
+            {
+                name: 'asd',
+                value: '121'
+            },
+            {
+                name: 'wqe',
+                value: '1221'
+            },
+            {
+                name: 'ret',
+                value: '22'
+            },
+            {
+                name: 'vcb',
+                value: '33'
+            }
+        ],
+        '11': [
+            {
+                name: 'asd',
+                value: '121'
+            },
+            {
+                name: 'wqe',
+                value: '1221'
+            },
+            {
+                name: 'ret',
+                value: '22'
+            },
+            {
+                name: 'vcb',
+                value: '33'
+            }
+        ],
+        '13': [
             {
                 name: 'asd',
                 value: '121'
