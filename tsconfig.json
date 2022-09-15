@@ -20,5 +20,5 @@
     "target": "esnext"
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "src/reportWebVitals.js"]
+  "include": ["**/*.ts", "**/*.tsx", "src/reportWebVitals.js", "src/setupTests.js"]
 }

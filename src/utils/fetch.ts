@@ -2,7 +2,7 @@
  import { message } from 'antd';
 
  // 创建axios实例
- let instance = axios.create({
+ const instance = axios.create({
    headers: {
      'Content-Type': 'application/json;charset=UTF-8'
    }
