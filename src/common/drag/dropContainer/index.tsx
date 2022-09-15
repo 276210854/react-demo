@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { useDrop } from 'react-dnd'
 import React from 'react'
 import { ItemTypes } from '../interface'
@@ -27,7 +27,7 @@ export const DropGroup: FC<DropGroupProps> = ({ allowedDropEffect, children, acc
 					groupIndex: groupIndex
 				}
 			},
-			collect: (monitor: any) => ({
+			collect: (monitor) => ({
 				isOver: monitor.isOver(),
 				canDrop: monitor.canDrop(),
 			}),

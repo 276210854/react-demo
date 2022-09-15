@@ -1,9 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import React from 'react'
-import { DragGroup } from '@/common/drag/dragContainer'
-import { DropGroup } from '@/common/drag/dropContainter'
+import { DragGroup, DropGroup, ArrowIcon, OpenFolderIcon, CloseFolderIcon, DianIcon, PersonIcon } from '@/common'
 import './index.scss'
-import {Arrow, OpenFolder, CloseFolder, Dian, Person} from '@/common/icons'
 import { wrapperawait, toFlatObj } from '@/utils/tool'
 import { getDetailByIdXHR, getListXHR } from '@/utils/request'
 import { message } from 'antd';
@@ -52,8 +50,8 @@ export const Container: FC = () => {
 	const renderNoChildMenu = (props) => {
 		return (
 			<DragGroup id={props.id} type={ItemTypes.BOX}>
-				<Dian />&nbsp;&nbsp;
-				<Person />&nbsp;&nbsp;
+				<DianIcon />&nbsp;&nbsp;
+				<PersonIcon />&nbsp;&nbsp;
 				<span>{props.name}</span>
 			</DragGroup>
 		)
@@ -67,11 +65,11 @@ export const Container: FC = () => {
 		return (
 			<>
 				<div className='folder flexStart borderBottom' onClick={switchStatus}>
-					<Arrow />&nbsp;
-					{!!sourceObj[item.id].showChild ? <OpenFolder /> : <CloseFolder />}&nbsp;
+					<ArrowIcon />&nbsp;
+					{sourceObj[item.id].showChild ? <OpenFolderIcon /> : <CloseFolderIcon />}&nbsp;
 					<span className='folderName'>{item.name}</span>
 				</div>
-				{!!sourceObj[item.id].showChild ? (
+				{sourceObj[item.id].showChild ? (
 					<div className='folder-child'>
 						{ 
 							item.children.map((child) => {

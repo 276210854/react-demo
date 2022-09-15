@@ -15,13 +15,7 @@ export const DragGroup: FC<DragGroupProps> = ({ id, children, type = ItemTypes.B
 				//选中放置
 				const dropResult = monitor.getDropResult() as DropResult
 				if (item && dropResult) {
-					const isDropAllowed =
-						dropResult.allowedDropEffect === 'any' ||
-						dropResult.allowedDropEffect === dropResult.dropEffect
-					if (isDropAllowed) {
-						const isCopyAction = dropResult.dropEffect === 'copy'
-						const actionName = isCopyAction ? 'copied' : 'moved'
-					}
+				//todo
 				}
 			},
 			collect: (monitor: DragSourceMonitor) => ({

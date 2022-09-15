@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './index.scss'
-import {Close, Dian, Search, Small, Big} from '@/common/icons'
-import { Checkbox, Input } from 'antd'
+import {CloseIcon, DianIcon, SearchIcon, SmallIcon, BigIcon, CheckGroup} from '@/common'
+import { Input } from 'antd'
 import { propTypes } from './interface'
 
 const GroupCard = (props: propTypes) => {
@@ -25,50 +24,46 @@ const GroupCard = (props: propTypes) => {
 	}
     const changeSearchVal = (e) => {
         setPlainOptions(plainOptions.map(item => {
-            return {　...item, show: item.name.indexOf(e.target.value) > -1}
+            return { ...item, show: item.name.indexOf(e.target.value) > -1 }
         }))
     }
-	const selecteds = plainOptions.filter(item => item.checked)
-    const showOption = plainOptions.filter(item => !!item.show)
-	const treeName = info?.parentIds?.map(id => allSourceObj[id]?.name)?.join(' / ') + ' / ' + info.name
 	const handleClose = () => {
 		close && close(info.id)
 	}
-	return (
-		<div className='card'>
+	const groupTitle = () => {
+		return (
 			<div className='group-title'>
 				<div className='left'>
-					<Dian width={10} height={10} />&nbsp;&nbsp;
+					<DianIcon width={10} height={10} />&nbsp;&nbsp;
 					<span className='groupName'>{info.name}</span>
 					&nbsp;=&nbsp;
 					<span className='selected'>{selecteds.map(item => item.name)?.join(',')}</span>
 				</div>
 				<div className="right">
-					{showAll ? <Small onClick={() => setShowAll(false)} /> : <Big onClick={() => setShowAll(true)} />}
-					<Close width={10} height={10} onClick={handleClose} />
+					{showAll ? <SmallIcon onClick={() => setShowAll(false)} /> : <BigIcon onClick={() => setShowAll(true)} />}
+					<CloseIcon width={10} height={10} onClick={handleClose} />
 				</div>
 			</div>
+		)
+	}
+	const selecteds = plainOptions.filter(item => item.checked)
+    const showOption = plainOptions.filter(item => !!item.show)
+	const treeName = info?.parentIds?.map(id => allSourceObj[id]?.name)?.join(' / ') + ' / ' + info.name
+	return (
+		<div className='card'>
+			{groupTitle()}
 			<div className={`main ${showAll ? '' : 'hidden'}`}>
 				<div className='tree'>{treeName}</div>
 				<div className='operation'>
-					<div className='search'>
-						<Input placeholder="large size" onChange={changeSearchVal} prefix={<Search />} />
+					<div className='SearchIcon'>
+						<Input placeholder="large size" onChange={changeSearchVal} prefix={<SearchIcon />} />
 					</div>
 					<div className='statistics flexStart'>
 						<span className='clear' onClick={clearAllSelected}>Clear All</span>
 						<span>{selecteds?.length || 0} selected</span>
 					</div>
 					<div className='check-list'>
-						{
-							showOption.map(item => {
-								return (
-									<div className='check-wrapper' key={item.name}>
-										<Checkbox onChange={e => handleChangeSelected(e, item)} checked={item.checked}>{item.name}</Checkbox>
-										<span className='num'>{item.value}</span>
-									</div>
-								)
-							})
-						}
+						<CheckGroup options={showOption} onChange={handleChangeSelected} />
 					</div>
 				</div>
 			</div>
