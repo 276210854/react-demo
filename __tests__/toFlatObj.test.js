@@ -1,5 +1,16 @@
-import { toFlatObj } from '@/utils';
+// import { toFlatObj } from '../src/utils/tool';
 
+const toFlatObj = (tree, parentId = []) => {
+	let obj = {}
+	tree.forEach(item => {
+		obj[item.id] = {...item, parentIds: parentId}
+		if (item?.children?.length) {
+			obj = {...obj, ...toFlatObj(item.children, [...parentId, item.id])}
+		}
+	})
+	
+	return obj
+}
 const OriginList = [
   {
       name: 'My Data',
